@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,56 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model PriorityLevels {
+  id            Int         @id @default(autoincrement())
+  priorityLevel pLevels     @unique
+  processes     Processes[]
+
+  @@map("priorityLevels")
+}
+
+model Processes {
+  id             Int            @id @default(autoincrement())
+  processNumber  String
+  task           String?
+  deadline       DateTime       @db.Date
+  isSolved       Boolean        @default(false)
+  priorityId     Int
+  userId         Int
+  createdAt      DateTime       @default(now()) @db.Timestamptz(6)
+  priorityLevels PriorityLevels @relation(fields: [priorityId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users          Users          @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([processNumber, task, userId])
+  @@map("processes")
+}
+
+model Sessions {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String   @unique
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  users     Users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("sessions")
+}
+
+model Users {
+  id        Int         @id @default(autoincrement())
+  email     String      @unique
+  password  String
+  createdAt DateTime    @default(now()) @db.Timestamptz(6)
+  processes Processes[]
+  sessions  Sessions[]
+
+  @@map("users")
+}
+
+enum pLevels {
+  p1
+  p2
+  p3
+  p4
 }
