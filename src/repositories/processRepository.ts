@@ -52,3 +52,17 @@ export async function getProcessById(processId: number) {
 
   return process;
 }
+
+export async function updateProcessSolvedStatus(
+  processId: number,
+  isSolved: boolean
+) {
+  await prisma.processes.update({
+    where: {
+      id: processId,
+    },
+    data: {
+      isSolved: !isSolved,
+    },
+  });
+}
