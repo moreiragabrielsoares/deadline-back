@@ -42,3 +42,27 @@ export async function getProcessesOrderByDeadline(userId: number) {
 
   return processes;
 }
+
+export async function getProcessById(processId: number) {
+  const process = await prisma.processes.findUnique({
+    where: {
+      id: processId,
+    },
+  });
+
+  return process;
+}
+
+export async function updateProcessSolvedStatus(
+  processId: number,
+  isSolved: boolean
+) {
+  await prisma.processes.update({
+    where: {
+      id: processId,
+    },
+    data: {
+      isSolved: !isSolved,
+    },
+  });
+}

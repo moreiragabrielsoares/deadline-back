@@ -19,4 +19,11 @@ processRouter.get(
   processController.getProcessesOrderByDeadline
 );
 
+processRouter.put(
+  "/processes",
+  validateSession,
+  validateSchema(processSchema.processIdSchema),
+  processController.updateProcessSolvedStatus
+);
+
 export default processRouter;

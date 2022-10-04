@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as processService from "../services/processService";
-import { INewProcess } from "../types/processTypes";
+import { INewProcess, IProcessId } from "../types/processTypes";
 
 export async function createNewProcessDeadline(req: Request, res: Response) {
   const userId = res.locals.session.userId;
@@ -17,4 +17,13 @@ export async function getProcessesOrderByDeadline(req: Request, res: Response) {
   const processes = await processService.getProcessesOrderByDeadline(userId);
 
   res.status(200).send(processes);
+}
+
+export async function updateProcessSolvedStatus(req: Request, res: Response) {
+  const userId = res.locals.session.userId;
+  const { id: processId }: IProcessId = req.body;
+
+  await processService.updateProcessSolvedStatus(userId, processId);
+
+  res.status(200).send("Process status updated");
 }
