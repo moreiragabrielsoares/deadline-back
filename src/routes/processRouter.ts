@@ -13,4 +13,10 @@ processRouter.post(
   processController.createNewProcessDeadline
 );
 
+processRouter.get(
+  "/processes",
+  validateSession,
+  processController.getProcessesOrderByDeadline
+);
+
 export default processRouter;
