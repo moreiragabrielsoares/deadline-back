@@ -26,3 +26,25 @@ export async function getProcessesOrderByDeadline(userId: number) {
 
   return processes;
 }
+
+export async function updateProcessSolvedStatus(
+  userId: number,
+  processId: number
+) {
+  const process = await processRepository.getProcessById(processId);
+
+  if (!process) {
+    throw { type: "not_found", message: "Process not found" };
+  }
+
+  if (process.userId !== userId) {
+    throw { type: "unauthorized", message: "User and process do not match" };
+  }
+
+  await processRepository.updateProcessSolvedStatus(
+    processId,
+    process.isSolved
+  );
+
+  return;
+}
