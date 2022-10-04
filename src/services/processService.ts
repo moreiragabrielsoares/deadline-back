@@ -1,0 +1,12 @@
+import { INewProcess } from "../types/processTypes";
+import * as processRepository from "../repositories/processRepository";
+
+export async function createNewProcessDeadline(
+  newProcessData: INewProcess,
+  userId: number
+) {
+  const createNewProcessData = { ...newProcessData, userId };
+  createNewProcessData.deadline = new Date(createNewProcessData.deadline);
+
+  await processRepository.insertNewProcess(createNewProcessData);
+}
