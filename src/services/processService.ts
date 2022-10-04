@@ -20,3 +20,9 @@ export async function createNewProcessDeadline(
 
   await processRepository.insertNewProcess(createNewProcessData);
 }
+
+export async function getProcessesOrderByDeadline(userId: number) {
+  const processes = await processRepository.getProcessesOrderByDeadline(userId);
+
+  return processes;
+}
