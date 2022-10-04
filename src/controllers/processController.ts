@@ -10,3 +10,11 @@ export async function createNewProcessDeadline(req: Request, res: Response) {
 
   res.status(201).send("New register created");
 }
+
+export async function getProcessesOrderByDeadline(req: Request, res: Response) {
+  const userId = res.locals.session.userId;
+
+  const processes = await processService.getProcessesOrderByDeadline(userId);
+
+  res.status(200).send(processes);
+}
