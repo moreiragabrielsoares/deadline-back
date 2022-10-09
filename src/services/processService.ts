@@ -48,3 +48,19 @@ export async function updateProcessSolvedStatus(
 
   return;
 }
+
+export async function deleteProcess(userId: number, processId: number) {
+  const process = await processRepository.getProcessById(processId);
+
+  if (!process) {
+    throw { type: "not_found", message: "Process not found" };
+  }
+
+  if (process.userId !== userId) {
+    throw { type: "unauthorized", message: "User and process do not match" };
+  }
+
+  await processRepository.deleteProcessById(processId);
+
+  return;
+}
