@@ -26,4 +26,11 @@ processRouter.put(
   processController.updateProcessSolvedStatus
 );
 
+processRouter.delete(
+  "/processes",
+  validateSession,
+  validateSchema(processSchema.processIdSchema),
+  processController.deleteProcess
+);
+
 export default processRouter;

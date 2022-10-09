@@ -66,3 +66,11 @@ export async function updateProcessSolvedStatus(
     },
   });
 }
+
+export async function deleteProcessById(processId: number) {
+  await prisma.processes.delete({
+    where: {
+      id: processId,
+    },
+  });
+}
