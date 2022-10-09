@@ -27,3 +27,12 @@ export async function updateProcessSolvedStatus(req: Request, res: Response) {
 
   res.status(200).send("Process status updated");
 }
+
+export async function deleteProcess(req: Request, res: Response) {
+  const userId = res.locals.session.userId;
+  const { id: processId }: IProcessId = req.body;
+
+  await processService.deleteProcess(userId, processId);
+
+  res.status(200).send("Process deleted");
+}
